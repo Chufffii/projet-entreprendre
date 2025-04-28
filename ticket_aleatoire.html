@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ticket Aléatoire avec QR - Au Fil des Pages</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- Librairie QRCode.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+<body>
+  <div class="ticket-form" style="text-align:center; padding:20px;">
+ <img src="logo.jpeg" alt="Logo Au Fil des Pages" class="logo">
+    <h1 class="peniche-name">Au Fil des Pages</h1>
+
+    <h1>Ticket aléatoire généré</h1>
+    <button id="generateTicketBtn">Générer un ticket aléatoire</button>
+
+    <div id="ticketDisplay" style="margin-top:20px; font-family:'Georgia', serif; background:#fff8e7; padding:20px; border-radius:10px; display:inline-block; text-align:left; max-width:300px;">
+      <!-- Contenu du ticket apparaîtra ici -->
+    </div>
+
+    <div id="qrCode" style="margin-top:20px;"></div>
+  </div>
+
+
+  <script>
+    const boissons = [
+      { nom: 'Le Lumière', prix: 1.60 },
+      { nom: 'Le Fourvière', prix: 2.30 },
+      { nom: 'Le Canut', prix: 2.50 },
+      { nom: 'Le Saône latte', prix: 3.20 }
+    ];
+    const douceurs = [
+      { nom: 'Cookie', prix: 3.20 },
+      { nom: 'Brownie', prix: 3.40 },
+      { nom: 'Madeleine', prix: 3.40 }
+    ];
+    const paninis = [
+      { nom: 'Tomate mozza pest', prix: 4.50 },
+      { nom: 'Jambon cru, comté, roquette', prix: 4.80 }
+    ];
+    const formules = [
+      { nom: 'Goûter littéraire', prix: 5.99 },
+      { nom: 'Lecture fraîche', prix: 6.99 },
+      { nom: 'Formule Lyonnaise', prix: 8.99 }
+    ];
+
+    function generateRandomTicket() {
+      const boisson = boissons[Math.floor(Math.random() * boissons.length)];
+      const douceur = douceurs[Math.floor(Math.random() * douceurs.length)];
+      const panini = paninis[Math.floor(Math.random() * paninis.length)];
+      const formule = formules[Math.floor(Math.random() * formules.length)];
+      const total = boisson.prix + douceur.prix + panini.prix + formule.prix;
+
+      const now = new Date();
+      const dateStr = now.toLocaleDateString('fr-FR');
+      const timeStr = now.toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'});
+
+      const ticketHTML = `
+        <h2 style="margin-top:0;">Au Fil des Pages</h2>
+        <p><strong>Date :</strong> ${dateStr}</p>
+        <p><strong>Heure :</strong> ${timeStr}</p>
+        <hr>
+        <p><strong>Boisson :</strong> ${boisson.nom} — ${boisson.prix.toFixed(2)}€</p>
+        <p><strong>Douceur :</strong> ${douceur.nom} — ${douceur.prix.toFixed(2)}€</p>
+        <p><strong>Panini :</strong> ${panini.nom} — ${panini.prix.toFixed(2)}€</p>
+        <p><strong>Formule :</strong> ${formule.nom} — ${formule.prix.toFixed(2)}€</p>
+        <hr>
+        <p><strong>Total :</strong> ${total.toFixed(2)}€</p>
+      `;
+
+      const disp = document.getElementById('ticketDisplay');
+      disp.innerHTML = ticketHTML;
+
+      const qrContainer = document.getElementById('qrCode');
+      qrContainer.innerHTML = '';
+      new QRCode(qrContainer, {
+        text: ticketHTML.replace(/<[^>]*>?/gm, ''),
+        width: 128,
+        height: 128
+      });
+    }
+
+    document.getElementById('generateTicketBtn').addEventListener('click', generateRandomTicket);
+    // Génération initiale
+    generateRandomTicket();
+  </script>
+</body>
+</html>
