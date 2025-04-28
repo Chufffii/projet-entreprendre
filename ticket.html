@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ticket - Au Fil des Pages</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="ticket" id="ticket"></div>
+
+  <script>
+    // Mapping des prix selon nom
+    const prices = {
+      'Le Lumière': 1.60,
+      'Le Fourvière': 2.30,
+      'Le Canut': 2.50,
+      'Le Saône latte': 3.20,
+      'Cookie': 3.20,
+      'Brownie': 3.40,
+      'Madeleine': 3.40,
+      'Tomate mozza pest': 4.50,
+      'Jambon cru, comté, roquette': 4.80,
+      'Goûter littéraire': 5.99,
+      'Lecture fraîche': 6.99,
+      'Formule Lyonnaise': 8.99
+    };
+
+    window.onload = function() {
+      const params = new URLSearchParams(window.location.search);
+      const choix = params.has('formule') ? 'formule' : 'unite';
+      const temps = params.get('temps') || '';
+      let total = 0;
+      let html = '';
+
+      // En-tête avec logo et nom
+      html += `<img src="logo.jpeg" class="logo" alt="Logo Au Fil des Pages">
+               <h1 class="peniche-name">Au Fil des Pages</h1>`;
+
+      // Date, heure et numéro de ticket
+      const now = new Date();
+      const date = now.toLocaleDateString('fr-FR');
+      const hour = now.toLocaleTimeString('fr-FR', {hour: '2-digit', minute: '2-digit'});
+      const ticketNumber = Math.floor(Math.random() * 9000) + 1000;
+
+      html += `<div class="ticket-info">
+                 <p><strong>Date :</strong> ${date}</p>
+                 <p><strong>Heure :</strong> ${hour}</p>
+                 <p><strong>Ticket n° :</strong> ${ticketNumber}</p>
+               </div>`;
+
+      // Consommations
+      html += `<div class="consommations"><h2>Vos consommations</h2><ul>`;
+      if (choix === 'unite') {
+        ['boisson', 'douceur', 'panini'].forEach(key => {
+          const name = params.get(key);
+          if (name) {
+            const decoded = decodeURIComponent(name);
+            html += `<li>${decoded} — ${prices[decoded].toFixed(2)}€</li>`;
+            total += prices[decoded];
+          }
+        });
+      } else {
+        const formule = decodeURIComponent(params.get('formule'));
+        html += `<li>${formule}</li>`;
+        total += prices[formule];
+      }
+      html += `</ul></div>`;
+
+      // Temps
+      html += `<div class="temps"><p><strong>Temps passé à bord :</strong> ${temps}</p></div>`;
+
+      // Total
+      html += `<div class="total"><p><strong>Total :</strong> ${total.toFixed(2)}€</p></div>`;
+
+      // Remerciements
+      html += `<p class="merci">Merci de votre visite et à très bientôt !</p>`;
+
+      document.getElementById('ticket').innerHTML = html;
+    };
+  </script>
+</body>
+</html>
