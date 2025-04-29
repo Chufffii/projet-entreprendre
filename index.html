@@ -1,25 +1,26 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Formulaire - Au Fil des Pages</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Création de ticket - Au Fil des Pages</title>
+  <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
   <div class="ticket-form">
     <h1>Créer un ticket de balade</h1>
-    <form id="ticketForm">
-      <label for="nbPersonnes">Nombre de personnes :</label>
-      <input type="number" id="nbPersonnes" name="nbPersonnes" min="1" required>
 
-      <label for="mode">Mode de tarification :</label>
+    <form id="ticketForm">
+      <label for="personnes">Nombre de personnes :</label>
+      <input type="number" id="personnes" name="personnes" required min="1" />
+
+      <label for="mode">Type de balade :</label>
       <select id="mode" name="mode">
         <option value="complet">Tour complet</option>
         <option value="flexible">Flexible (au temps)</option>
       </select>
 
-      <label for="formule">Formule ?</label>
+      <label for="formule">Formule (facultatif) :</label>
       <select id="formule" name="formule">
         <option value="">Aucune</option>
         <option value="Goûter littéraire">Goûter littéraire - 5,99€</option>
@@ -27,35 +28,39 @@
         <option value="Formule Lyonnaise">Formule Lyonnaise - 8,99€</option>
       </select>
 
-      <label for="ajouts">Consommations initiales (facultatif, séparées par virgules) :</label>
-      <input type="text" id="ajouts" name="ajouts" placeholder="Café, Jus, Cookie...">
-
       <button type="submit">Générer le ticket</button>
     </form>
 
-    <div id="qrCode"></div>
+    <div id="qrCode" style="margin-top: 20px;"></div>
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <script>
-    document.getElementById("ticketForm").addEventListener("submit", function(event) {
-      event.preventDefault();
+    document.getElementById("ticketForm").addEventListener("submit", function (e) {
+      e.preventDefault();
 
-      const baseUrl = "https://chufffii.github.io/projet-entreprendre/ticket.html";
-      const nb = encodeURIComponent(document.getElementById("nbPersonnes").value);
+      const personnes = document.getElementById("personnes").value;
       const mode = document.getElementById("mode").value;
-      const formule = encodeURIComponent(document.getElementById("formule").value);
-      const ajouts = encodeURIComponent(document.getElementById("ajouts").value);
+      const formule = document.getElementById("formule").value;
 
-      let url = `${baseUrl}?personnes=${nb}&mode=${mode}`;
-      if (formule) url += `&formule=${formule}`;
-      if (ajouts) url += `&ajouts=${ajouts}`;
+      const params = new URLSearchParams();
+      params.append("personnes", personnes);
+      params.append("mode", mode);
+      if (formule) params.append("formule", encodeURIComponent(formule));
 
-      window.open(url, '_blank');
+      const url = "https://chufffii.github.io/projet-entreprendre/ticket.html?" + params.toString();
 
+      // Générer le QR Code
       const qrContainer = document.getElementById("qrCode");
-      qrContainer.innerHTML = '';
-      new QRCode(qrContainer, { text: url, width: 150, height: 150 });
+      qrContainer.innerHTML = "";
+      new QRCode(qrContainer, {
+        text: url,
+        width: 200,
+        height: 200,
+      });
+
+      // Ouvrir le ticket dans un nouvel onglet
+      window.open(url, "_blank");
     });
   </script>
 </body>
