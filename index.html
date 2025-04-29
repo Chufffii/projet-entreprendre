@@ -3,95 +3,59 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Formulaire de Ticket - Au Fil des Pages</title>
+  <title>Formulaire - Au Fil des Pages</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="ticket-form">
-    <h1>Générer votre ticket</h1>
+    <h1>Créer un ticket de balade</h1>
     <form id="ticketForm">
-      <label for="choix">Choisissez votre commande :</label>
-      <select id="choix" name="choix" onchange="toggleOptions()">
-        <option value="unite">Commande à l'unité</option>
-        <option value="formule">Formule</option>
+      <label for="nbPersonnes">Nombre de personnes :</label>
+      <input type="number" id="nbPersonnes" name="nbPersonnes" min="1" required>
+
+      <label for="mode">Mode de tarification :</label>
+      <select id="mode" name="mode">
+        <option value="complet">Tour complet</option>
+        <option value="flexible">Flexible (au temps)</option>
       </select>
 
-      <div id="uniteOptions">
-        <h2>Choisissez vos consommations</h2>
-        <label for="boisson">Boisson :</label>
-        <select id="boisson" name="boisson">
-          <option value="Le Lumière">Le Lumière - 1,60€</option>
-          <option value="Le Fourvière">Le Fourvière - 2,30€</option>
-          <option value="Le Canut">Le Canut - 2,50€</option>
-          <option value="Le Saône latte">Le Saône latte - 3,20€</option>
-        </select>
+      <label for="formule">Formule ?</label>
+      <select id="formule" name="formule">
+        <option value="">Aucune</option>
+        <option value="Goûter littéraire">Goûter littéraire - 5,99€</option>
+        <option value="Lecture fraîche">Lecture fraîche - 6,99€</option>
+        <option value="Formule Lyonnaise">Formule Lyonnaise - 8,99€</option>
+      </select>
 
-        <label for="douceur">Douceur :</label>
-        <select id="douceur" name="douceur">
-          <option value="Cookie">Cookie - 3,20€</option>
-          <option value="Brownie">Brownie - 3,40€</option>
-          <option value="Madeleine">Madeleine - 3,40€</option>
-        </select>
+      <label for="ajouts">Consommations initiales (facultatif, séparées par virgules) :</label>
+      <input type="text" id="ajouts" name="ajouts" placeholder="Café, Jus, Cookie...">
 
-        <label for="panini">Panini :</label>
-        <select id="panini" name="panini">
-          <option value="Tomate mozza pest">Tomate mozza pest - 4,50€</option>
-          <option value="Jambon cru, comté, roquette">Jambon cru, comté, roquette - 4,80€</option>
-        </select>
-      </div>
-
-      <div id="formuleOptions" style="display:none;">
-        <h2>Choisissez votre formule</h2>
-        <label for="formule">Formule :</label>
-        <select id="formule" name="formule">
-          <option value="Goûter littéraire">Goûter littéraire - 5,99€</option>
-          <option value="Lecture fraîche">Lecture fraîche - 6,99€</option>
-          <option value="Formule Lyonnaise">Formule Lyonnaise - 8,99€</option>
-        </select>
-      </div>
-
-      <label for="temps">Temps passé à bord (en heures) :</label>
-      <input type="text" id="temps" name="temps" placeholder="1h, 1h30..." required>
-
-      <button type="submit">Générer mon ticket</button>
+      <button type="submit">Générer le ticket</button>
     </form>
 
-    <div id="ticketDisplay"></div>
     <div id="qrCode"></div>
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <script>
-    function toggleOptions() {
-      const choix = document.getElementById('choix').value;
-      document.getElementById('uniteOptions').style.display = choix === 'unite' ? 'block' : 'none';
-      document.getElementById('formuleOptions').style.display = choix === 'formule' ? 'block' : 'none';
-    }
-
-    document.getElementById('ticketForm').addEventListener('submit', function(event) {
+    document.getElementById("ticketForm").addEventListener("submit", function(event) {
       event.preventDefault();
-      const baseUrl = 'https://chufffii.github.io/projet-entreprendre/ticket.html';
-      const choix = document.getElementById('choix').value;
-      const temps = encodeURIComponent(document.getElementById('temps').value);
-      let url = `${baseUrl}?temps=${temps}`;
 
-      if (choix === 'unite') {
-        const boisson = encodeURIComponent(document.getElementById('boisson').value);
-        const douceur = encodeURIComponent(document.getElementById('douceur').value);
-        const panini = encodeURIComponent(document.getElementById('panini').value);
-        url += `&boisson=${boisson}&douceur=${douceur}&panini=${panini}`;
-      } else {
-        const formule = encodeURIComponent(document.getElementById('formule').value);
-        url += `&formule=${formule}`;
-      }
+      const baseUrl = "https://chufffii.github.io/projet-entreprendre/ticket.html";
+      const nb = encodeURIComponent(document.getElementById("nbPersonnes").value);
+      const mode = document.getElementById("mode").value;
+      const formule = encodeURIComponent(document.getElementById("formule").value);
+      const ajouts = encodeURIComponent(document.getElementById("ajouts").value);
 
-      // Ouvre le ticket dans un nouvel onglet
+      let url = `${baseUrl}?personnes=${nb}&mode=${mode}`;
+      if (formule) url += `&formule=${formule}`;
+      if (ajouts) url += `&ajouts=${ajouts}`;
+
       window.open(url, '_blank');
 
-      // Génère et affiche le QR Code
-      const qrContainer = document.getElementById('qrCode');
+      const qrContainer = document.getElementById("qrCode");
       qrContainer.innerHTML = '';
-      new QRCode(qrContainer, { text: url, width: 128, height: 128 });
+      new QRCode(qrContainer, { text: url, width: 150, height: 150 });
     });
   </script>
 </body>
