@@ -59,29 +59,6 @@
         width: 200,
         height: 200,
       });
-      
-      // Forçage explicite du lien client
-const urlClient = new URL("https://chufffii.github.io/projet-entreprendre/ticket-client.html");
-urlClient.searchParams.set("personnes", personnes);
-urlClient.searchParams.set("mode", mode);
-if (formule) urlClient.searchParams.set("formule", formule);
-
-// Génération du QR Code client uniquement
-qrContainer.innerHTML = "";
-new QRCode(qrContainer, {
-  text: urlClient.toString(),
-  width: 200,
-  height: 200,
-});
-
-// Ouvre la version staff (ne dépend pas du QR code)
-const urlStaff = new URL("https://chufffii.github.io/projet-entreprendre/ticket-staff.html");
-urlStaff.searchParams.set("personnes", personnes);
-urlStaff.searchParams.set("mode", mode);
-if (formule) urlStaff.searchParams.set("formule", formule);
-
-window.open(urlStaff.toString(), "_blank");
-
 
       // Ouvrir la version staff
       window.open(urlStaff, "_blank");
