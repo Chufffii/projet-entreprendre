@@ -43,25 +43,29 @@
       const mode = document.getElementById("mode").value;
       const formule = document.getElementById("formule").value;
 
-      const params = new URLSearchParams();
-      params.append("personnes", personnes);
-      params.append("mode", mode);
-      if (formule) params.append("formule", encodeURIComponent(formule));
+      // Génération URL client
+      const urlClient = new URL("https://chufffii.github.io/projet-entreprendre/ticket-client.html");
+      urlClient.searchParams.set("personnes", personnes);
+      urlClient.searchParams.set("mode", mode);
+      if (formule) urlClient.searchParams.set("formule", formule);
 
-      const urlClient = "https://chufffii.github.io/projet-entreprendre/ticket-client.html?" + params.toString();
-      const urlStaff = "https://chufffii.github.io/projet-entreprendre/ticket-staff.html?" + params.toString();
+      // Génération URL staff
+      const urlStaff = new URL("https://chufffii.github.io/projet-entreprendre/ticket-staff.html");
+      urlStaff.searchParams.set("personnes", personnes);
+      urlStaff.searchParams.set("mode", mode);
+      if (formule) urlStaff.searchParams.set("formule", formule);
 
-      // QR Code vers ticket-client.html uniquement
+      // Génération du QR Code client uniquement
       const qrContainer = document.getElementById("qrCode");
       qrContainer.innerHTML = "";
       new QRCode(qrContainer, {
-        text: urlClient,
+        text: urlClient.toString(),
         width: 200,
         height: 200,
       });
 
-      // Ouvrir la version staff
-      window.open(urlStaff, "_blank");
+      // Ouverture de la page staff
+      window.open(urlStaff.toString(), "_blank");
     });
   </script>
 </body>
