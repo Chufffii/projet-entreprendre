@@ -2,9 +2,9 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Création de ticket - Au Fil des Pages</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
   <div class="ticket-form">
@@ -48,20 +48,19 @@
       params.append("mode", mode);
       if (formule) params.append("formule", encodeURIComponent(formule));
 
-      const urlClient = "https://chufffii.github.io/projet-entreprendre/ticket-client.html?" + params.toString();
-      const urlStaff = "https://chufffii.github.io/projet-entreprendre/ticket-staff.html?" + params.toString();
+      const url = "https://chufffii.github.io/projet-entreprendre/ticket.html?" + params.toString();
 
-      // QR Code vers ticket-client.html uniquement
+      // Générer le QR Code
       const qrContainer = document.getElementById("qrCode");
       qrContainer.innerHTML = "";
       new QRCode(qrContainer, {
-        text: urlClient,
+        text: url,
         width: 200,
         height: 200,
       });
 
-      // Ouvrir la version staff
-      window.open(urlStaff, "_blank");
+      // Ouvrir le ticket dans un nouvel onglet
+      window.open(url, "_blank");
     });
   </script>
 </body>
