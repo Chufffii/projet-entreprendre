@@ -2,9 +2,9 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Création de ticket - Au Fil des Pages</title>
-  <link rel="stylesheet" href="style.css"/>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="ticket-form">
@@ -43,24 +43,29 @@
       const mode = document.getElementById("mode").value;
       const formule = document.getElementById("formule").value;
 
-      const params = new URLSearchParams();
-      params.append("personnes", personnes);
-      params.append("mode", mode);
-      if (formule) params.append("formule", encodeURIComponent(formule));
+      // Génération URL client
+      const urlClient = new URL("https://chufffii.github.io/projet-entreprendre/ticket-client.html");
+      urlClient.searchParams.set("personnes", personnes);
+      urlClient.searchParams.set("mode", mode);
+      if (formule) urlClient.searchParams.set("formule", formule);
 
-      const url = "https://chufffii.github.io/projet-entreprendre/ticket.html?" + params.toString();
+      // Génération URL staff
+      const urlStaff = new URL("https://chufffii.github.io/projet-entreprendre/ticket-staff.html");
+      urlStaff.searchParams.set("personnes", personnes);
+      urlStaff.searchParams.set("mode", mode);
+      if (formule) urlStaff.searchParams.set("formule", formule);
 
-      // Générer le QR Code
+      // Génération du QR Code client uniquement
       const qrContainer = document.getElementById("qrCode");
       qrContainer.innerHTML = "";
       new QRCode(qrContainer, {
-        text: url,
+        text: urlClient.toString(),
         width: 200,
         height: 200,
       });
 
-      // Ouvrir le ticket dans un nouvel onglet
-      window.open(url, "_blank");
+      // Ouverture de la page staff
+      window.open(urlStaff.toString(), "_blank");
     });
   </script>
 </body>
