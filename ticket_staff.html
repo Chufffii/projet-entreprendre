@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ticket - Staff</title>
+  <title>Ticket - Staff (v2)</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -13,19 +13,27 @@
     const prices = {
       'Goûter littéraire': 5.99,
       'Lecture fraîche': 6.99,
-      'Formule Lyonnaise': 8.99
+      'Formule Lyonnaise': 8.99,
+      'Café': 2.00,
+      'Jus local': 2.50,
+      'Cookie': 2.00,
+      'Brownie': 2.50,
+      'Tartelette': 3.00
     };
 
+    const consommationsDisponibles = Object.keys(prices).filter(item => !item.startsWith("Formule"));
+    const formulesDisponibles = Object.keys(prices).filter(item => item.startsWith("Formule") || item.startsWith("Goûter") || item.startsWith("Lecture"));
+
     let ajouts = [];
+    let formulesAjoutees = [];
     const startTime = new Date();
     let commandeOuverte = true;
 
-    function afficherTicket(staff = true) {
+    function afficherTicket() {
       const params = new URLSearchParams(window.location.search);
       const personnes = parseInt(params.get('personnes')) || 1;
       const mode = params.get('mode');
-      const formule = decodeURIComponent(params.get('formule') || '');
-      const formulePrix = prices[formule] || 0;
+      const formuleInitiale = decodeURIComponent(params.get('formule') || '');
 
       let total = 0;
       let html = '';
@@ -53,32 +61,55 @@
         html += `<p><strong>Prix de la balade :</strong> ${tarifTemps.toFixed(2)} €</p></div>`;
         total += tarifTemps;
       } else {
-        const tarifFixe = 20 * personnes;
+        const tarifFixe = 12 * personnes;
         html += `<p><strong>Prix de la balade :</strong> ${tarifFixe.toFixed(2)} €</p>`;
         total += tarifFixe;
       }
 
-      if (formule) {
-        html += `<div class="consommations"><h2>Formule ajoutée</h2><ul><li>${formule} — ${formulePrix.toFixed(2)}€</li></ul></div>`;
-        total += formulePrix;
+      if (formuleInitiale) {
+        html += `<div class="consommations"><h2>Formule initiale</h2><ul><li>${formuleInitiale} — ${prices[formuleInitiale]?.toFixed(2) || 0}€</li></ul></div>`;
+        total += prices[formuleInitiale] || 0;
+      }
+
+      if (formulesAjoutees.length > 0) {
+        html += `<div class="consommations"><h2>Formules supplémentaires</h2><ul>`;
+        formulesAjoutees.forEach(f => {
+          html += `<li>${f} — ${prices[f]?.toFixed(2) || 0}€</li>`;
+          total += prices[f] || 0;
+        });
+        html += `</ul></div>`;
       }
 
       if (ajouts.length > 0) {
         html += `<div class="consommations"><h2>Consommations supplémentaires</h2><ul>`;
-        ajouts.forEach(el => html += `<li>${el}</li>`);
+        ajouts.forEach(el => {
+          html += `<li>${el} — ${prices[el]?.toFixed(2) || 0}€</li>`;
+          total += prices[el] || 0;
+        });
         html += `</ul></div>`;
       }
 
       html += `<div class="total"><p><strong>Total :</strong> ${total.toFixed(2)}€</p></div>`;
 
-      if (staff && commandeOuverte) {
+      if (commandeOuverte) {
         html += `<div class="ajout-conso">
-                   <h3>Ajouter une consommation</h3>
-                   <input type="text" id="nouvelleConso" placeholder="Ex: Cappuccino 3,50€" />
-                   <button onclick="ajouterConso()">Ajouter</button>
-                   <button onclick="fermerCommande()">Fermer la commande</button>
-                 </div>`;
-      } else if (!commandeOuverte) {
+                  <h3>Ajouter une consommation</h3>
+                  <select id="selectConso">
+                    ${consommationsDisponibles.map(c => `<option value="${c}">${c} — ${prices[c].toFixed(2)}€</option>`).join('')}
+                  </select>
+                  <button onclick="ajouterConso()">Ajouter</button>
+
+                  <h3 style="margin-top:20px">Ajouter une formule</h3>
+                  <select id="selectFormule">
+                    ${formulesDisponibles.map(f => `<option value="${f}">${f} — ${prices[f].toFixed(2)}€</option>`).join('')}
+                  </select>
+                  <button onclick="ajouterFormule()">Ajouter Formule</button>
+
+                  <div style="margin-top:20px">
+                    <button onclick="fermerCommande()" style="background:#8b0000;color:#fff;padding:8px;border:none;border-radius:4px;cursor:pointer">Fermer la commande</button>
+                  </div>
+                </div>`;
+      } else {
         html += `<p><em>Commande fermée. Aucune modification possible.</em></p>`;
       }
 
@@ -88,11 +119,19 @@
     }
 
     function ajouterConso() {
-      const input = document.getElementById("nouvelleConso");
-      const valeur = input.value.trim();
-      if (valeur) {
+      const select = document.getElementById("selectConso");
+      const valeur = select.value;
+      if (valeur && !ajouts.includes(valeur)) {
         ajouts.push(valeur);
-        input.value = "";
+        afficherTicket();
+      }
+    }
+
+    function ajouterFormule() {
+      const select = document.getElementById("selectFormule");
+      const valeur = select.value;
+      if (valeur && !formulesAjoutees.includes(valeur)) {
+        formulesAjoutees.push(valeur);
         afficherTicket();
       }
     }
