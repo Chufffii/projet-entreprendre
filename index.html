@@ -8,18 +8,28 @@
 </head>
 <body>
   <div class="ticket-form">
+    <h2>Rechercher un ticket</h2>
+    <form id="searchForm">
+      <label for="searchTicket">Numéro du ticket :</label>
+      <input type="text" id="searchTicket" name="numero_ticket" required>
+      <button type="submit">Rechercher</button>
+    </form>
+    <div id="searchResult"></div>
+
     <h1>Générer votre ticket</h1>
     <form id="ticketForm">
       <label for="choix">Choisissez votre commande :</label>
       <select id="choix" name="choix" onchange="toggleOptions()">
+        <option value="">Aucun</option>
         <option value="unite">Commande à l'unité</option>
         <option value="formule">Formule</option>
       </select>
 
-      <div id="uniteOptions">
+      <div id="uniteOptions" style="display:none;">
         <h2>Choisissez vos consommations</h2>
         <label for="boisson">Boisson :</label>
         <select id="boisson" name="boisson">
+          <option value="">Aucune</option>
           <option value="Le Lumière">Le Lumière - 1,60€</option>
           <option value="Le Fourvière">Le Fourvière - 2,30€</option>
           <option value="Le Canut">Le Canut - 2,50€</option>
@@ -28,6 +38,7 @@
 
         <label for="douceur">Douceur :</label>
         <select id="douceur" name="douceur">
+          <option value="">Aucune</option>
           <option value="Cookie">Cookie - 3,20€</option>
           <option value="Brownie">Brownie - 3,40€</option>
           <option value="Madeleine">Madeleine - 3,40€</option>
@@ -35,6 +46,7 @@
 
         <label for="panini">Panini :</label>
         <select id="panini" name="panini">
+          <option value="">Aucun</option>
           <option value="Tomate mozza pest">Tomate mozza pest - 4,50€</option>
           <option value="Jambon cru, comté, roquette">Jambon cru, comté, roquette - 4,80€</option>
         </select>
@@ -44,14 +56,18 @@
         <h2>Choisissez votre formule</h2>
         <label for="formule">Formule :</label>
         <select id="formule" name="formule">
+          <option value="">Aucune</option>
           <option value="Goûter littéraire">Goûter littéraire - 5,99€</option>
           <option value="Lecture fraîche">Lecture fraîche - 6,99€</option>
           <option value="Formule Lyonnaise">Formule Lyonnaise - 8,99€</option>
         </select>
       </div>
 
-      <label for="temps">Temps passé à bord (en heures) :</label>
-      <input type="text" id="temps" name="temps" placeholder="1h, 1h30..." required>
+      <label for="temps">Temps passé à bord :</label>
+      <select id="temps" name="temps" required>
+        <option value="Tour complet">Tour complet</option>
+        <option value="Tarif flexible">Tarif flexible</option>
+      </select>
 
       <button type="submit">Générer mon ticket</button>
     </form>
@@ -68,6 +84,24 @@
       document.getElementById('formuleOptions').style.display = choix === 'formule' ? 'block' : 'none';
     }
 
+    document.getElementById('searchForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+      const numeroTicket = document.getElementById('searchTicket').value;
+
+      // Remplacez l'URL par celle de votre serveur InfinityFree
+      fetch(`https://aufildespages.free.nf/ticket.php?numero_ticket=${numeroTicket}`)
+        .then(response => response.json())
+        .then(data => {
+          const resultDiv = document.getElementById('searchResult');
+          if (data.success === false) {
+            resultDiv.innerHTML = `<p>${data.message}</p>`;
+          } else {
+            resultDiv.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+          }
+        })
+        .catch(error => console.error('Erreur :', error));
+    });
+
     document.getElementById('ticketForm').addEventListener('submit', function(event) {
       event.preventDefault();
       const baseUrl = 'https://chufffii.github.io/projet-entreprendre/ticket.html';
@@ -80,7 +114,7 @@
         const douceur = encodeURIComponent(document.getElementById('douceur').value);
         const panini = encodeURIComponent(document.getElementById('panini').value);
         url += `&boisson=${boisson}&douceur=${douceur}&panini=${panini}`;
-      } else {
+      } else if (choix === 'formule') {
         const formule = encodeURIComponent(document.getElementById('formule').value);
         url += `&formule=${formule}`;
       }
