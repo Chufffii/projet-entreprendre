@@ -1,0 +1,185 @@
+/* Général */
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    background-color: #6f8d89; /* Couleur des en-têtes utilisée comme fond */
+    color: #6f8d89; /* Texte principal en contraste */
+}
+
+/* En-tête */
+header {
+    background-color: #fbf3e2; /* Couleur douce pour l'en-tête */
+    color: #6f8d89; /* Texte en contraste */
+    padding: 20px 10px;
+    text-align: center;
+    border-bottom: 4px solid #8acbcb; /* Bordure pour un effet visuel */
+}
+
+header img {
+    max-width: 100px;
+    margin-bottom: 10px;
+}
+
+header h1 {
+    font-size: 2.5em;
+    margin: 0;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2); /* Ombre légère */
+}
+
+header p {
+    font-size: 1.2em;
+    margin: 5px 0 0;
+}
+
+/* Sections principales */
+main {
+    padding: 20px;
+}
+
+section {
+    margin-bottom: 30px;
+    padding: 20px;
+    background-color: #fbf3e2; /* Fond des sections */
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Ombre douce */
+    border-left: 5px solid #8acbcb; /* Accent visuel sur le côté gauche */
+}
+
+section h2 {
+    font-size: 1.8em;
+    color: #6f8d89; /* Couleur des titres */
+    margin-bottom: 15px;
+    border-bottom: 2px solid #8acbcb; /* Ligne décorative */
+    padding-bottom: 5px;
+}
+
+/* Listes */
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+ul li {
+    padding: 5px 0;
+    border-bottom: 1px solid #aebead; /* Ligne de séparation douce */
+    font-size: 1.1em; /* Légèrement plus grand pour une meilleure lisibilité */
+    color: #6f8d89; /* Texte des listes */
+}
+
+ul li:last-child {
+    border-bottom: none;
+}
+
+/* Iframe (carte) */
+iframe {
+    border: 1px solid #aebead;
+    border-radius: 8px;
+    margin-top: 10px;
+}
+
+/* Pied de page */
+footer {
+    text-align: center;
+    padding: 10px;
+    background-color: #fbf3e2; /* Fond du pied de page */
+    color: #6f8d89; /* Texte en contraste */
+    position: relative;
+    bottom: 0;
+    width: 100%;
+    font-size: 0.9em;
+    border-top: 4px solid #8acbcb; /* Bordure pour correspondre à l'en-tête */
+}
+
+/* Liens */
+a {
+    color: #8acbcb;
+    text-decoration: none;
+    font-weight: bold; /* Accentuation des liens */
+}
+
+a:hover {
+    text-decoration: underline;
+    color: #6f8d89; /* Couleur légèrement plus foncée au survol */
+}
+
+/* Boutons */
+button {
+    background-color: #8acbcb;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+}
+
+button:hover {
+    background-color: #6f8d89;
+}
+
+/* Tableaux */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 1em;
+    text-align: left;
+}
+
+table th, table td {
+    padding: 12px 15px;
+    border: 1px solid #aebead;
+}
+
+table th {
+    background-color: #fbf3e2; /* Fond des en-têtes de tableau */
+    color: #6f8d89; /* Texte des en-têtes */
+}
+
+table tr:nth-child(even) {
+    background-color: #6f8d89; /* Lignes alternées */
+    color: #fbf3e2; /* Texte des lignes alternées */
+}
+
+/* Sidebar */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 200px;
+    height: 100%;
+    background-color: #6f8d89; /* Couleur de fond */
+    color: #ffffff; /* Couleur du texte */
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); /* Ombre pour un effet visuel */
+}
+
+.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar ul li {
+    margin-bottom: 15px;
+}
+
+.sidebar ul li a {
+    color: #ffffff; /* Couleur des liens */
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+.sidebar ul li a:hover {
+    text-decoration: underline;
+    color: #8acbcb; /* Couleur au survol */
+}
+
+/* Décalage du contenu principal pour laisser de la place au menu */
+main {
+    margin-left: 220px; /* Largeur du menu + marge */
+    padding: 20px;
+}
