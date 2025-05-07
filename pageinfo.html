@@ -40,6 +40,9 @@
         <p>Bienvenue sur notre page d'information</p>
     </header>
     
+    <!-- Bouton pour ouvrir/fermer la sidebar -->
+    <button id="toggleSidebar" class="toggle-sidebar">☰</button>
+
     <nav class="sidebar">
         <ul>
             <li><a href="#top">Accueil</a></li>
@@ -99,5 +102,18 @@
         <p>Conditions générales de vente :</p>
         <a href="cgv.html">CGDV</a>
     </footer>
+
+      <!-- Code JavaScript -->
+      <script>
+        const toggleButton = document.getElementById('toggleSidebar');
+        const sidebar = document.querySelector('.sidebar');
+        const mainContent = document.querySelector('main');
+
+        toggleButton.addEventListener('click', () => {
+            sidebar.classList.toggle('hidden');
+            mainContent.classList.toggle('sidebar-hidden');
+        });
+    </script>
+
     </body>
 </html>
