@@ -88,7 +88,7 @@
       event.preventDefault();
       const numeroTicket = document.getElementById('searchTicket').value;
 
-      // Remplacez l'URL par celle de votre serveur InfinityFree
+     
       fetch(`https://php-myadmin.net/db_structure.php?db=if0_38924519_tickets_aufildespages=${numeroTicket}`)
         .then(response => response.json())
         .then(data => {
