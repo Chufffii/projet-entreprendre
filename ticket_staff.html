@@ -11,6 +11,15 @@
 
   <script>
     const prices = {
+      'Le Lumière': 1.60,
+      'Le Fourvière': 2.30,
+      'Le Canut': 2.50,
+      'Le Saône latte': 3.20,
+      'Cookie': 3.20,
+      'Brownie': 3.40,
+      'Madeleine': 3.40,
+      'Tomate mozza pest': 4.50,
+      'Jambon cru, comté, roquette': 4.80,
       'Goûter littéraire': 5.99,
       'Lecture fraîche': 6.99,
       'Formule Lyonnaise': 8.99
@@ -74,7 +83,10 @@
       if (staff && commandeOuverte) {
         html += `<div class="ajout-conso">
                    <h3>Ajouter une consommation</h3>
-                   <input type="text" id="nouvelleConso" placeholder="Ex: Cappuccino 3,50€" />
+                   <select id="nouvelleConso">
+                     <option value="">Sélectionnez une consommation</option>
+                     ${Object.keys(prices).map(item => `<option value="${item}">${item} — ${prices[item].toFixed(2)}€</option>`).join('')}
+                   </select>
                    <button onclick="ajouterConso()">Ajouter</button>
                    <button onclick="fermerCommande()">Fermer la commande</button>
                  </div>`;
@@ -88,11 +100,11 @@
     }
 
     function ajouterConso() {
-      const input = document.getElementById("nouvelleConso");
-      const valeur = input.value.trim();
+      const select = document.getElementById("nouvelleConso");
+      const valeur = select.value;
       if (valeur) {
         ajouts.push(valeur);
-        input.value = "";
+        select.value = "";
         afficherTicket();
       }
     }
