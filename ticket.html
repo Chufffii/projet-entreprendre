@@ -10,7 +10,7 @@
   <div class="ticket" id="ticket"></div>
 
   <script>
-    // Mapping des prix selon nom
+
     const prices = {
       'Le Lumière': 1.60,
       'Le Fourvière': 2.30,
@@ -73,7 +73,6 @@
       // Total
       html += `<div class="total"><p><strong>Total :</strong> ${total.toFixed(2)}€</p></div>`;
 
-      // Remerciements
       html += `<p class="merci">Merci de votre visite et à très bientôt !</p>`;
 
       document.getElementById('ticket').innerHTML = html;
