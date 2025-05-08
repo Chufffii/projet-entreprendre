@@ -72,46 +72,9 @@
       html += `<div class="total"><p><strong>Total :</strong> ${total.toFixed(2)}€</p></div>`;
 
       if (staff && commandeOuverte) {
-        html += `<div id="ajout-conso" style="display:none;">
-        <h3>Ajouter une consommation</h3>
-        <div id="ajout-conso" style="display:none;">
-        <h2>Choisissez vos consommations</h2>
-        <label for="boisson">Boisson :</label>
-        <select id="boisson" name="boisson">
-          <option value="">Aucune</option>
-          <option value="Le Lumière">Le Lumière - 1,60€</option>
-          <option value="Le Fourvière">Le Fourvière - 2,30€</option>
-          <option value="Le Canut">Le Canut - 2,50€</option>
-          <option value="Le Saône latte">Le Saône latte - 3,20€</option>
-        </select>
-
-        <label for="douceur">Douceur :</label>
-        <select id="douceur" name="douceur">
-          <option value="">Aucune</option>
-          <option value="Cookie">Cookie - 3,20€</option>
-          <option value="Brownie">Brownie - 3,40€</option>
-          <option value="Madeleine">Madeleine - 3,40€</option>
-        </select>
-
-        <label for="panini">Panini :</label>
-        <select id="panini" name="panini">
-          <option value="">Aucun</option>
-          <option value="Tomate mozza pest">Tomate mozza pest - 4,50€</option>
-          <option value="Jambon cru, comté, roquette">Jambon cru, comté, roquette - 4,80€</option>
-        </select>
-      </div>
-
-      <div id="formuleOptions" style="display:none;">
-        <h2>Choisissez votre formule</h2>
-        <label for="formule">Formule :</label>
-        <select id="formule" name="formule">
-          <option value="">Aucune</option>
-          <option value="Goûter littéraire">Goûter littéraire - 5,99€</option>
-          <option value="Lecture fraîche">Lecture fraîche - 6,99€</option>
-          <option value="Formule Lyonnaise">Formule Lyonnaise - 8,99€</option>
-        </select>
-      </div>
-          <input type="text" id="nouvelleConso" placeholder="Ex: Cappuccino 3,50€" />
+        html += `<div class="ajout-conso">
+                   <h3>Ajouter une consommation</h3>
+                   <input type="text" id="nouvelleConso" placeholder="Ex: Cappuccino 3,50€" />
                    <button onclick="ajouterConso()">Ajouter</button>
                    <button onclick="fermerCommande()">Fermer la commande</button>
                  </div>`;
